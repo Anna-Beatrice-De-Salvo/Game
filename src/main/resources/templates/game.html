@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Game</title>
+    <script src="js/game.js"></script>
+    <link rel="stylesheet" href="css/game.css">
+</head>
+<body onload="inizio()">
+    <h1>Lista Giochi</h1>
+    <button id="bottoneNewGame">Aggiungi Gioco</button>
+
+    <!--Lista Giochi-->
+    <ul>
+		
+        <li th:each="entry: ${listaGiochi}"><button>
+			<!--|/team/?idGames=${nomeGame}&idTeam=Fanatic|-->
+				<a href="|/gioco/?idGames=${entry.key}|">
+            <p th:text="${entry.value.toString}"></p>
+				</a></button><br>	
+            <button 
+            th:data-id="${entry.key}"
+            th:data-titolo="${entry.value.titolo}"
+            onclick="renderInfoGioco(this)" >Info</button>
+            <form action="/eliminaGame" method="post" onsubmit="if(!confirm('Vuoi davvero eliminare ?')){return false;}">
+            <input type="hidden" name="id" th:value="${entry.key}">
+            <button>Elimina</button>
+			</form>
+        </li>
+    </ul>
+
+    <!--Modale newGame-->
+    <div id="modaleNewGame" class ="modal-back">
+        <div class="modal-content">
+            <span id="chiudiModaleNew" class="close">X</span>
+            <form action="/aggiungiGame" method="post">
+                <input type="text" name="titolo" placeholder="Inserisci Nome" required><br>
+                <button type="submit">Inserisci Nuovo Gioco</button>
+                <button onclick="pulisciNewGame()">Pulisci</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modifica Gioco-->
+    <div id="modaleInfoGame" class="modal-back">
+        <div class="modal-content">
+            <span id="chiudiModaleInfo" class="close">X</span>
+            <form action="/modificaGame" method="post" onsubmit="if(!confirm('Vuoi davvero modificare?')){return false;}">
+            <input type="hidden" name="id" id="mod-id">
+        <input type="text" name="titolo" id="mod-titolo" placeholder="Inserisci Nome Gioco" required><br>
+     <button type ="submit">Modifica Gioco</button>
+    <button onclick="pulisciModaleGame()">Pulisci</button>
+</form>
+        </div>
+    </div>
+</body>
+</html>

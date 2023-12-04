@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Gioco</title>
+    <link rel="stylesheet" href="css/game.css">
+    <script src="js/gioco.js"></script>
+</head>
+    <body onload="inizio()">
+        <!--Lista Team di un gioco-->
+        <h1 th:text="${nomeGame}"></h1>	
+        <ul>
+            <li th:each="entry: ${listaTeam}"><button>
+            <p th:text="${entry.value.toString}"></p>
+                <button
+                th:data-id="${entry.key}"
+                th:data-nome="${entry.value.nome}"
+                th:data-nazione="${entry.value.nazione}"
+                th:data-nazione="${entry.value.idGames}">Info</button>
+                <form action="/eliminaTeam" method="post" onsubmit="if(confirm('Vuoi davvero eliminare?')){return true;}">
+                <input type="hidden" name="id" th:value="${entry.key}">
+                <button>Elimina</button>
+                </form>
+            </li>
+            
+        </ul>
+         <!--Modale newTeam-->
+    <div id="modaleNewTeam" class ="modal-back">
+        <div class="modal-content">
+            <span id="chiudiModaleNew" class="close">X</span>
+            <form action="/aggiungiTeam" method="post">
+                <input type="text" name="nome" placeholder="Inserisci Nome" required><br>
+                <input type="text" name="nazione" placeholder="Inserisci Nazione" required><br>
+                <button type="submit">Inserisci Nuovo Team</button>
+                <button onclick="pulisciNewGame()">Pulisci</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modifica Team-->
+    <div id="modaleInfoTeam" class="modal-back">
+        <div class="modal-content">
+            <span id="chiudiModaleInfo" class="close">X</span>
+            <form action="/modificaTeam" method="post" onsubmit="if(!confirm('Vuoi davvero modificare?')){return false;}">
+            <input type="hidden" name="id" id="mod-id">
+        <input type="text" name="nome" id="mod-nome" placeholder="Inserisci Nome Team" required><br>
+        <input type="text" name="nazione" id="mod-nazione" placeholder="Inserisci Nazione Team" required><br>
+     <button type ="submit">Modifica Gioco</button>
+    <button onclick="pulisciModaleGame()">Pulisci</button>
+</form>
+        </div>
+    </div>
+</body>
+</html>
